@@ -41,7 +41,7 @@ else:
     double = False
 
 experiment_args = {"env": env,
-                "num_episodes": 2000,
+                "num_episodes": 100,
                 "max_steps": 2000,
                 "policy_update_threshold": 4,
                 "target_update_threshold": 16,
@@ -49,7 +49,8 @@ experiment_args = {"env": env,
                 "model_structure": model_structure,
                 "agent_hyperparams": agent_hyperparams,
                 "dueling": dueling,
-                "double": double}
+                "double": double,
+				"experiment_idx": str(sys.argv[1])}
 
 gc.disable()
 
