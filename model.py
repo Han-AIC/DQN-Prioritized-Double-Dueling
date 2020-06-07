@@ -39,6 +39,8 @@ class Model(nn.Module):
           return nn.Linear
       elif layer_type == "batchnorm1d":
           return nn.BatchNorm1d
+      elif layer_type == 'conv1d':
+          return nn.Conv1d
       elif layer_type == 'conv2d':
           return nn.Conv2d
       else:

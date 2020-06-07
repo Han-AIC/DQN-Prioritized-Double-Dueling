@@ -27,7 +27,7 @@ def deep_Q_learning(env,
   step_counter = 0
 
   scores = []
-  scores_window = deque(maxlen=100)
+  scores_window = deque(maxlen=20)
 
   with open('./Reports/report' + experiment_idx + '.csv', 'w+', newline='') as csvfile:
       writer = csv.writer(csvfile, delimiter=' ',
@@ -59,19 +59,20 @@ def deep_Q_learning(env,
           if done:
             break
 
-        agent.decay_epsilon()
+          agent.decay_epsilon()
 
-        scores.append(score)
-        scores_window.append(score)       # save most recent score
-        scores.append(score)              # save most recent score
+          scores_window.append(score)       # save most recent score
+          scores.append(score)              # save most recent score
         # eps = max(eps_end, eps_decay*eps) # decrease epsilon
         print('\rEpisode {}\tAverage Score: {:.2f}, Network Updates: {:.2f}, Target Updates: {:.2f}'.format(i, np.mean(scores_window), policy_update_counter, target_update_counter), end="")
         if i % 20 == 0:
-            print('\rEpisode {}\tAverage Score: {:.2f}, Network Updates: {:.2f}, Target Updates: {:.2f}'.format(i, np.mean(scores_window), policy_update_counter, target_update_counter))
-            writer.writerow(['\rEpisode {}\tAverage Score: {:.2f}, Network Updates: {:.2f}, Target Updates: {:.2f}'.format(i, np.mean(scores_window), policy_update_counter, target_update_counter)])
+            text = '\rEpisode {}\tAverage Score: {:.2f}, Network Updates: {:.2f}, Target Updates: {:.2f}'.format(i, np.mean(scores_window), policy_update_counter, target_update_counter)
+            print(text)
+            writer.writerow([text])
         if np.mean(scores_window)>=220.0:
-            print('\nEnvironment solved in {:d} episodes!\tAverage Score: {:.2f}'.format(i-100, np.mean(scores_window)))
-            writer.writerow(['\nEnvironment solved in {:d} episodes!\tAverage Score: {:.2f}'.format(i-100, np.mean(scores_window))])
+            text = '\nSolution Reached in {:d} episodes!\tAverage Score: {:.2f}'.format(i-100, np.mean(scores_window))
+            print(text)
+            writer.writerow([text])
             torch.save(agent.local_model(), './Solutions/experiment_' + experiment_idx + '.pth')
 
   return scores, agent
