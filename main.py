@@ -41,8 +41,8 @@ else:
     double = False
 
 experiment_args = {"env": env,
-                "num_episodes": 100,
-                "max_steps": 2000,
+                "num_episodes": 20,
+                "max_steps": 1000,
                 "policy_update_threshold": 4,
                 "target_update_threshold": 16,
                 "action_shape": env.action_space.n,

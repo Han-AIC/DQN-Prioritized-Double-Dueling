@@ -10,7 +10,7 @@ import copy
 from replaybuffer import ReplayBuffer
 from model import Model, DuelingQ
 
-device = torch.device("cuda:1")
+
 
 class Agent():
   def __init__(self,
@@ -19,6 +19,7 @@ class Agent():
                agent_hyperparams,
                dueling,
                double):
+    self.device = torch.device(agent_hyperparams["device"])
     self.action_shape = action_shape
     self.dueling = dueling
     self.double = double
@@ -26,12 +27,12 @@ class Agent():
       prime = model_structure[0]
       value = model_structure[1]
       advantage = model_structure[2]
-      self.local_model = DuelingQ(prime, value, advantage).to(device)
-      self.target_model = DuelingQ(prime, value, advantage).to(device)
+      self.local_model = DuelingQ(prime, value, advantage).to(self.device)
+      self.target_model = DuelingQ(prime, value, advantage).to(self.device)
       self.target_model.load_state_dict(self.local_model.state_dict())
     else:
-      self.local_model = Model(model_structure).to(device)
-      self.target_model = Model(model_structure).to(device)
+      self.local_model = Model(model_structure).to(self.device)
+      self.target_model = Model(model_structure).to(self.device)
       self.target_model.load_state_dict(self.local_model.state_dict())
 
     self.optimizer = optim.RMSprop(self.local_model.parameters(),
@@ -65,7 +66,7 @@ class Agent():
   def get_Q_values(self, state):
     state = torch.from_numpy(state)
     state = state.float().unsqueeze(0)
-    state = state.to(device)
+    state = state.to(self.device)
     self.local_model.eval()
     with torch.no_grad():
       Q_values = self.local_model(state)
@@ -104,12 +105,12 @@ class Agent():
     sample, probs = self.replay_buffer.sample()
     indices = sample[0]
     priorities = sample[1]
-    states = sample[2].float().to(device)
-    actions = sample[3].long().to(device)
-    rewards = sample[4].float().to(device)
-    next_states = sample[5].float().to(device)
-    done_flags = sample[6].float().to(device)
-    probs = probs.to(device)
+    states = sample[2].float().to(self.device)
+    actions = sample[3].long().to(self.device)
+    rewards = sample[4].float().to(self.device)
+    next_states = sample[5].float().to(self.device)
+    done_flags = sample[6].float().to(self.device)
+    probs = probs.to(self.device)
 
     # ==========================
     # Calculate Deep Q reward.

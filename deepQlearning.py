@@ -32,7 +32,7 @@ def deep_Q_learning(env,
   with open('./Reports/report' + experiment_idx + '.csv', 'w+', newline='') as csvfile:
       writer = csv.writer(csvfile, delimiter=' ',
                         quotechar='|', quoting=csv.QUOTE_MINIMAL)
-      for i in range(num_episodes):
+      for i in range(num_episodes + 1):
         state = env.reset()
         score = 0
         policy_update_counter = 0

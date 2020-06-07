@@ -1,4 +1,4 @@
-{  "agent_hyperparams": {
+{  "agent_hyperparams": {"device": "cuda:0",
                          "double": "False",
                          "dueling": "False",
                          "lr":5e-4 ,
