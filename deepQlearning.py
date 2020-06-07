@@ -3,6 +3,7 @@ import random
 from collections import namedtuple, deque, OrderedDict, Counter
 import copy
 import csv
+import torch
 
 from agent import Agent
 
@@ -69,10 +70,11 @@ def deep_Q_learning(env,
             text = '\rEpisode {}\tAverage Score: {:.2f}, Network Updates: {:.2f}, Target Updates: {:.2f}'.format(i, np.mean(scores_window), policy_update_counter, target_update_counter)
             print(text)
             writer.writerow([text])
-        if np.mean(scores_window)>=220.0:
-            text = '\nSolution Reached in {:d} episodes!\tAverage Score: {:.2f}'.format(i-100, np.mean(scores_window))
+        if np.mean(scores_window)>=200.0:
+            text = '\nSolution Reached in {:d} episodes!\tAverage Score: {:.2f}'.format(i, np.mean(scores_window))
             print(text)
             writer.writerow([text])
-            torch.save(agent.local_model(), './Solutions/experiment_' + experiment_idx + '.pth')
+            torch.save(agent.local_model.state_dict(), './Solutions/experiment_' + experiment_idx + '.pth')
+            break
 
   return scores, agent
