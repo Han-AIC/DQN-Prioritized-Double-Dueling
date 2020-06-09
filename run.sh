@@ -1,3 +1,4 @@
-
-
-python main.py 0
+for i in {0..10}
+do
+   python main.py $i & done
+wait

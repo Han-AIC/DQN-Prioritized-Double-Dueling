@@ -25,21 +25,23 @@ def deep_Q_learning(env,
               dueling,
               double)
 
-  step_counter = 0
-
   scores = []
-  scores_window = deque(maxlen=20)
+  scores_window = deque(maxlen=50)
+  step_counter = 0
 
   with open('./Reports/report' + experiment_idx + '.csv', 'w+', newline='') as csvfile:
       writer = csv.writer(csvfile, delimiter=' ',
                         quotechar='|', quoting=csv.QUOTE_MINIMAL)
       for i in range(num_episodes + 1):
+        if step_counter > 10000:
+            step_counter = 0
         state = env.reset()
         score = 0
         policy_update_counter = 0
         target_update_counter = 0
         for j in range(max_steps):
           action = agent.choose_action(state)
+
           next_state, reward, done, _ = env.step(action)
           score += reward
           agent.update_buffer(state, action, reward, next_state, done)
@@ -66,7 +68,7 @@ def deep_Q_learning(env,
           scores.append(score)              # save most recent score
         # eps = max(eps_end, eps_decay*eps) # decrease epsilon
         print('\rEpisode {}\tAverage Score: {:.2f}, Network Updates: {:.2f}, Target Updates: {:.2f}'.format(i, np.mean(scores_window), policy_update_counter, target_update_counter), end="")
-        if i % 20 == 0:
+        if i % 50 == 0:
             text = '\rEpisode {}\tAverage Score: {:.2f}, Network Updates: {:.2f}, Target Updates: {:.2f}'.format(i, np.mean(scores_window), policy_update_counter, target_update_counter)
             print(text)
             writer.writerow([text])

@@ -41,11 +41,11 @@ else:
     double = False
 
 experiment_args = {"env": env,
-                "num_episodes": 20,
-                "max_steps": 1000,
-                "policy_update_threshold": 4,
-                "target_update_threshold": 16,
-                "action_shape": env.action_space.n,
+                "num_episodes": 2500,
+                "max_steps": 2000,
+                "policy_update_threshold": 8,
+                "target_update_threshold": 24,
+                "action_shape": 4,
                 "model_structure": model_structure,
                 "agent_hyperparams": agent_hyperparams,
                 "dueling": dueling,
